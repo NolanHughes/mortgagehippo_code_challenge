@@ -13,9 +13,16 @@ class Api::V1::TransactionsController < ApplicationController
 
 	def create
     @transaction = Transaction.new(transaction_params)
+    @coin = Coin.find(params[:transaction][:coin_id])
 
-    if @transaction.save
+    if @transaction.save && @transaction.deposit == true && @transaction.withdrawal == false
+    	@coin.update_attributes(value: @coin.value + 1)
+
       render json: @transaction, status: :created, location: api_v1_transactions_url
+    elsif @transaction.save && @transaction.deposit == false && @transaction.withdrawal == true
+    	@coin.update_attributes(value: @coin.value - 1)
+
+    	render json: @transaction, status: :created, location: api_v1_coins_url
     else
       render json: @transaction.errors, status: :unprocessable_entity
     end
@@ -23,6 +30,6 @@ class Api::V1::TransactionsController < ApplicationController
 
   private
     def transaction_params
-      params.require(:transaction).permit(:coin_id)
+      params.require(:transaction).permit(:coin_id, :deposit, :withdrawal)
     end
 end
