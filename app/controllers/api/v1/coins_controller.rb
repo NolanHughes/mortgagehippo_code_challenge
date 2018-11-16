@@ -1,5 +1,5 @@
 class Api::V1::CoinsController < ApplicationController
-  before_action :set_coin, only: [:show, :update, :destroy]
+  # before_action :set_coin, only: [:show, :update, :destroy]
 
   def index
     @coins = Coin.all
@@ -8,7 +8,6 @@ class Api::V1::CoinsController < ApplicationController
   end
  
   def total
-    binding.pry
     @total = Coin.total
 
     render json: @total
