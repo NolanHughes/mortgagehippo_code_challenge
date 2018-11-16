@@ -1,5 +1,6 @@
 class Api::V1::CoinsController < ApplicationController
   before_action :set_coin, only: [:show, :update, :destroy]
+  before_action :authenticate_user
 
   def index
     @coins = Coin.all
