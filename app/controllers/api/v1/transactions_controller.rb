@@ -25,6 +25,12 @@ class Api::V1::TransactionsController < ApplicationController
       if @coin.value > 0
         @coin.update_attributes(value: @coin.value - 1)
 
+        if @coin.value < 4
+          @coins = Coin.all
+          @admins = User.where("role = ?", "admin")
+          AdminMailer.coin_low(@admins, @coin, @coins).deliver
+        end 
+
         render json: @transaction, status: :created, location: api_v1_coins_url
       else
         render json: { status: :unprocessable_entity, msg: 'Oops! Looks like you are trying to overdraw this coin.' }

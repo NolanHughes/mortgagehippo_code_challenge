@@ -1,0 +1,10 @@
+<h3>Hello Admins</h3>
+<p>There are only <%= @coin.value %> coins left for <%= @coin.name %>.</p>
+
+<h5>Here is a list of all the coins</h5>
+
+<ul>
+	<% @coins.each do |coin| %>
+		<li><%= coin.name %> - <%= coin.value %></li>
+	<% end %>
+</ul>
