@@ -15,8 +15,9 @@ class Api::V1::UsersController < ApplicationController
   end
   
   def create
-    user = User.new(user_params)
-    if user.save
+    @user = User.new(user_params)
+    if @user.save
+      AdminMailer.welcome_email(@user).deliver
       render json: {status: 200, msg: 'User was created.'}
     end
   end
@@ -38,7 +39,7 @@ class Api::V1::UsersController < ApplicationController
   private
   
   def user_params
-    params.require(:user).permit(:username, :email, :password, :password_confirmation)
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, :role)
   end
   
   def authorize
