@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_16_171136) do
+ActiveRecord::Schema.define(version: 2018_11_16_230427) do
 
   create_table "coins", force: :cascade do |t|
     t.integer "value"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 2018_11_16_171136) do
     t.datetime "updated_at", null: false
     t.boolean "deposit", default: false
     t.boolean "withdrawal", default: false
+    t.integer "user_id"
   end
 
   create_table "users", force: :cascade do |t|

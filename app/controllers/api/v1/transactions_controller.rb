@@ -22,9 +22,13 @@ class Api::V1::TransactionsController < ApplicationController
 
       render json: @transaction, status: :created, location: api_v1_transactions_url
     elsif @transaction.save && @transaction.deposit == false && @transaction.withdrawal == true
-    	@coin.update_attributes(value: @coin.value - 1)
+      if @coin.value > 0
+        @coin.update_attributes(value: @coin.value - 1)
 
-    	render json: @transaction, status: :created, location: api_v1_coins_url
+        render json: @transaction, status: :created, location: api_v1_coins_url
+      else
+        render json: { status: :unprocessable_entity, msg: 'Oops! Looks like you are trying to overdraw this coin.' }
+      end
     else
       render json: @transaction.errors, status: :unprocessable_entity
     end
@@ -32,6 +36,6 @@ class Api::V1::TransactionsController < ApplicationController
 
   private
     def transaction_params
-      params.require(:transaction).permit(:coin_id, :deposit, :withdrawal)
+      params.require(:transaction).permit(:coin_id, :deposit, :withdrawal, :user_id)
     end
 end

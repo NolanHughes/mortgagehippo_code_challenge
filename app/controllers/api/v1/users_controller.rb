@@ -7,9 +7,11 @@ class Api::V1::UsersController < ApplicationController
     render json: {status: 200, msg: 'Logged-in'}
   end
   
-  def current
+  def transactions
     current_user.update!(last_login: Time.now)
-    render json: current_user
+    transactions = Transaction.where("user_id = ?", current_user)
+    
+    render json: transactions
   end
   
   def create

@@ -22,7 +22,7 @@ class Api::V1::CoinsController < ApplicationController
     @coin = Coin.new(coin_params)
 
     if @coin.save
-      render json: @coin, status: :created, location: @coin
+      render json: @coin, status: :created, location: api_v1_coin_url(@coin)
     else
       render json: @coin.errors, status: :unprocessable_entity
     end
@@ -38,6 +38,7 @@ class Api::V1::CoinsController < ApplicationController
 
   def destroy
     @coin.destroy
+    render json: { status: 200, msg: 'Coin has been deleted.' }
   end
 
 

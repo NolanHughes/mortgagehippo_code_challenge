@@ -1,22 +1,19 @@
 Rails.application.routes.draw do    
-	namespace :api do
-	  namespace :v1 do
-      root   'home#index'
-      get    'auth' => 'home#auth'
-      
-      post   'user_token' => 'user_token#create'
-      
-      get    '/users' => 'users#index'
-      get    '/users/current' => 'users#current'
-      post   '/users/create' => 'users#create'
-      patch  '/user/:id' => 'users#update'
-      delete '/user/:id' => 'users#destroy'
+      namespace :api do
+            namespace :v1 do
+                  post 'user_token' => 'user_token#create'
 
-	  	get '/coins/total' => 'coins#total'
-	    resources :coins, only: [:index, :show, :create, :destroy]
+                  get '/user/transactions' => 'users#transactions'
+                  # get 'users/:id' => 'users#show'
+                  post '/users/create' => 'users#create'
+                  patch '/user/:id' => 'users#update'
+                  delete '/user/:id' => 'users#destroy'
 
-	    resources :transactions, only: [:index, :show, :create]   
-	  end
-	end
+                  get '/coins/total' => 'coins#total'
+                  resources :coins, only: [:index, :show, :create, :destroy]
+
+                  resources :transactions, only: [:index, :show, :create]
+            end
+      end
   
 end
